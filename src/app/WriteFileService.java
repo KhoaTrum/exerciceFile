@@ -1,6 +1,6 @@
 package app;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -12,6 +12,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import com.google.gson.Gson;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -74,8 +75,8 @@ public class WriteFileService {
                 ErrorLineObject errorLine = errorLineObjectList.get(i);
                 //Créer un élement "error"
                 Element error = document.createElement("error");
-                error.setAttribute("line", errorLine.numLine); //attribut line
-                error.setAttribute("message", errorLine.messError); //attribut message
+                error.setAttribute("line", errorLine.line); //attribut line
+                error.setAttribute("message", errorLine.message); //attribut message
                 error.appendChild(document.createTextNode(errorLine.line)); // Texte = ligne
                 errors.appendChild(error);
             }
@@ -103,5 +104,16 @@ public class WriteFileService {
 
     //Ecrire le fichier json en sortie
     private static void writeJson(String path, ArrayList<LineObject> lineObjectList, ArrayList<ErrorLineObject> errorLineObjectList, String inputFileName) {
+        Gson gson = new Gson();
+
+        try {
+            BufferedWriter buffout = new BufferedWriter(new FileWriter(new File (path)));
+            JasonFileObject jsFileObject = new JasonFileObject(inputFileName,lineObjectList,errorLineObjectList);
+            buffout.write(gson.toJson(jsFileObject));
+            buffout.close();
+            System.out.println("Fichier json en sortie est créé");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

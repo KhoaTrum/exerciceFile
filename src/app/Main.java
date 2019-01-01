@@ -13,33 +13,32 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-/*
-      //Saisir le fichier d'entrée
-      System.out.print("Veuillez saisir le chemin du fichier en entrée et enter : ");
-      String fileName = sc.nextLine();
-      File file = new File (fileName);
 
-      while (!file.isFile()) {
-    	  System.out.print("Fichier n'existe pas, ressayez le chemin du fichier en entrée : ");
-    	  fileName = sc.nextLine();
-    	  file = new File (fileName);
-      }
-
-      //Saisir le type du fichier de sortie
-	  System.out.print("Veuillez saisir le type du fichier en sortie (xml/json) : ");
-	  String outFileType = sc.nextLine();
-      while(!outFileType.equals("xml") && !outFileType.equals("json")) {
-    	  System.out.print("Veuillez saisir xml ou json : ");
-    	  outFileType = sc.nextLine();
-      }
-  */
-        String inputFilePathName = "C:\\Users\\DKP\\Desktop\\TestKhoa.txt";
-        String outFilePathName = "C:\\Users\\DKP\\Desktop\\TestKhoa.xml";
+        //Saisir le fichier d'entrée
+        System.out.print("Veuillez saisir le chemin du fichier en entrée et enter : ");
+        String inputFilePathName = sc.nextLine();
         File file = new File (inputFilePathName);
-        String outFileType = "xml";
 
-        BufferedReader buffin = null;
-        boolean readOk = true;
+        while (!file.isFile()) {
+            System.out.print("Fichier n'existe pas, ressayez le chemin du fichier en entrée : ");
+            inputFilePathName = sc.nextLine();
+            file = new File (inputFilePathName);
+        }
+
+        //Saisir le type du fichier de sortie
+        System.out.print("Veuillez saisir le type du fichier en sortie (xml/json) : ");
+        String outFileType = sc.nextLine();
+        while(!outFileType.equals("xml") && !outFileType.equals("json")) {
+            System.out.print("Veuillez saisir xml ou json : ");
+            outFileType = sc.nextLine();
+        }
+
+        //Saisir le fichier d'entrée
+        System.out.print("Veuillez saisir le chemin du fichier en sortie et enter : ");
+        String outFilePathName = sc.nextLine();
+
+        BufferedReader buffin = null; //Initialiser le buffered pour le lecture
+        boolean readOk = true; //Bool pour dire si le lecture est ok
 
         String line = null;
         int numLine = 0;
@@ -55,7 +54,6 @@ public class Main {
                 String messError = null;
 
                 for (String element:elementList) {
-                    //System.out.println(element);
                     if(!checkNotElementErr(numElement, element)){
                         messError = createMessError(numElement, messError);
                     }
@@ -78,8 +76,9 @@ public class Main {
             System.out.println("Il y a un problème du lecture du fichier en entrée");
             readOk = false;
         }
-
         if(readOk) {
+            System.out.println("Lecture du fichier en entrée est ok");
+            System.out.println("Le fichier en sortie est en train d'être écrit");
             WriteFileService.write(outFileType, outFilePathName, lineObjectList, errorLineObjectList, inputFilePathName);
         }
 
@@ -87,6 +86,7 @@ public class Main {
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
+    //Ajouter le nouvel element d'erreur au message d'erreur
     private static String createMessError(int numElement, String messError) {
         String typeElement = null;
         String newMessError;
@@ -134,7 +134,7 @@ public class Main {
     ///////////////////////////////////////////////////////////////////////////////////////////////
 //Vérifier la couleur
     private static boolean checkNotColorErr(String element) {
-        if (!element.equals("R") && !element.equals("G") && !element.equals("B")) {
+        if (!"R".equals(element) && !"G".equals(element) && !"B".equals(element)) {
             return false;
         }
         return true;
@@ -144,16 +144,12 @@ public class Main {
     ///////////////////////////////////////////////////////////////////////////////////////////////
 //Vérifier le numéro Référence
     private static boolean checkNotNumReferenceErr (String element) {
-        if (element.length()!=10) { //Ce n'est pas un numéro de 10 chiffres
-            return false;
-        }
-
         try {
             Integer.parseInt(element); //Vérifier si c'est bien un numéro entier
         } catch (NumberFormatException e) {
             return false;
         }
-        return true;
+        return element.length()==10; //Vérifier si c'est un numéro de 10 chiffres
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -179,5 +175,3 @@ public class Main {
         return true;
     }
 }
-
-
