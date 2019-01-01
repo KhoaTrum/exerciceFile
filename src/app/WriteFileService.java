@@ -77,7 +77,7 @@ public class WriteFileService {
                 Element error = document.createElement("error");
                 error.setAttribute("line", errorLine.line); //attribut line
                 error.setAttribute("message", errorLine.message); //attribut message
-                error.appendChild(document.createTextNode(errorLine.line)); // Texte = ligne
+                error.appendChild(document.createTextNode(errorLine.value)); // Texte = ligne
                 errors.appendChild(error);
             }
 
