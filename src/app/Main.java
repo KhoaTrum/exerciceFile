@@ -63,7 +63,7 @@ public class Main {
                     LineObject lineObject = new LineObject(elementList[1], elementList[2], elementList[3], elementList[0]);
                     lineObjectList.add(lineObject);
                 }else {
-                    ErrorLineObject errorLineObject = new ErrorLineObject(String.valueOf(numLine), line, messError);
+                    ErrorLineObject errorLineObject = new ErrorLineObject(String.valueOf(numLine+1), line, messError);
                     errorLineObjectList.add(errorLineObject);
                 }
                 numLine++;
